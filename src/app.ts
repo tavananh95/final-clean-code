@@ -1,6 +1,6 @@
 import express, { type Request, type Response } from 'express';
 
-const app = async () => {
+export function createApp() {
     const app = express();
     const port = 3000;
     const cors = require('cors');
@@ -12,10 +12,6 @@ const app = async () => {
     // initHandlers(app);
 
     try {
-        console.log("Connecting to the database ...");
-        // await AppDataSource.initialize();
-        console.log("Database connected successfully !");
-
         app.listen(port, () => {
             console.log(`Server running on http://localhost:${port}`);
             // swaggerDocs(app, port);
@@ -25,6 +21,5 @@ const app = async () => {
             console.error(error.message);
         }
     }
+    return app;
 }
-
-app();

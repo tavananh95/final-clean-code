@@ -7,6 +7,7 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 import { AuthProviderAccountEntity } from './auth-provider-account.entity';
+import {User} from "../../../domain/models/user";
 
 @Entity({ name: 'users' })
 export class UserEntity {
