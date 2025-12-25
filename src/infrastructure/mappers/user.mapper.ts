@@ -1,6 +1,6 @@
 // infrastructure/mappers/user.mapper.ts
 import { User } from '../../domain/models/user';
-import { UserEntity } from '../typeorm/entities/user.entity';
+import { UserEntity } from '../database/entities/user.entity';
 import {AuthProviderAccountMapper} from "./auth-provider-account.mapper";
 
 export class UserMapper {
