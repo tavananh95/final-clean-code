@@ -1,8 +1,8 @@
 import { DataSource, Repository } from 'typeorm';
 import { Card } from '../../../domain/models/card';
-import {CardEntity} from "../card.entity";
 import {CardMapper} from "../../mappers/card.mapper";
 import {CardRepository} from "../../../application/ports/card.repository";
+import {CardEntity} from "../entities/card.entity";
 
 export class TypeOrmCardRepository implements CardRepository {
     private repo: Repository<CardEntity>;

@@ -1,4 +1,5 @@
 import express, { type Request, type Response } from 'express';
+import {initHandlers} from "./presentation/http-handlers/initHandler";
 
 export function createApp() {
     const app = express();
@@ -9,7 +10,7 @@ export function createApp() {
         origin: "http://localhost:5173"
     }));
     app.use(express.json());
-    // initHandlers(app);
+    initHandlers(app);
 
     try {
         app.listen(port, () => {
