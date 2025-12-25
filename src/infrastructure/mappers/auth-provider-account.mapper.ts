@@ -6,7 +6,6 @@ import {
     AuthProvider as AuthProviderDomain,
 } from '../../domain/models/auth-provider-account';
 
-import { AuthProvider as AuthProviderEntity } from '../database/entities/auth-provider-account.entity';
 
 export class AuthProviderAccountMapper {
     static toDomain(entity: AuthProviderAccountEntity): AuthProviderAccountDomain {
@@ -32,7 +31,7 @@ export class AuthProviderAccountMapper {
 
         if (domain.id) entity.id = domain.id;
 
-        entity.provider = domain.provider as unknown as AuthProviderEntity;
+        entity.provider = domain.provider;
         entity.providerUserId = domain.providerUserId;
         entity.user = userEntity;
 

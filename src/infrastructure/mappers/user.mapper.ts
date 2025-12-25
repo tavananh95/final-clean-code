@@ -18,7 +18,7 @@ export class UserMapper {
 
     static toEntity(domain: User): UserEntity {
         const entity = new UserEntity();
-        entity.id = domain.id!;
+        if (domain.id) entity.id = domain.id;
         entity.email = domain.email;
         entity.displayName = domain.displayName;
         return entity;
