@@ -1,4 +1,4 @@
-import {AuthProvider} from "../../domain/models/auth-provider-account";
+import {AuthProvider} from "../../../domain/models/auth-provider-account";
 
 export type OidcUserInfo = {
     provider: AuthProvider;
