@@ -10,5 +10,5 @@ export const AppDataSource = new DataSource({
     database: config.dbName,
     logging: true,
     synchronize: config.dbSynchronise,
-    entities: [__dirname + '/../typeorm/entities/*.{ts,js}']
+    entities: [__dirname + "/../database/entities/*.{ts,js}"]
 });

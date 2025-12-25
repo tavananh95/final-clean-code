@@ -1,14 +1,12 @@
+import { AuthProviderAccountEntity } from '../database/entities/auth-provider-account.entity';
+import { UserEntity } from '../database/entities/user.entity';
 
 import {
     AuthProviderAccount as AuthProviderAccountDomain,
     AuthProvider as AuthProviderDomain,
 } from '../../domain/models/auth-provider-account';
 
-import {
-    AuthProvider as AuthProviderEntity,
-    AuthProviderAccountEntity
-} from '../database/entities/auth-provider-account.entity';
-import {UserEntity} from "../database/entities/user.entity";
+import { AuthProvider as AuthProviderEntity } from '../database/entities/auth-provider-account.entity';
 
 export class AuthProviderAccountMapper {
     static toDomain(entity: AuthProviderAccountEntity): AuthProviderAccountDomain {
