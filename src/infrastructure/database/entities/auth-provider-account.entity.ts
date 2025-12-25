@@ -7,12 +7,8 @@ import {
     CreateDateColumn,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
+import {AuthProvider} from "../../../domain/models/auth-provider-account";
 
-export enum AuthProvider {
-    GOOGLE = 'GOOGLE',
-    GITHUB = 'GITHUB',
-    MICROSOFT = 'MICROSOFT',
-}
 
 @Entity({ name: 'auth_provider_accounts' })
 @Index(['provider', 'providerUserId'], { unique: true })

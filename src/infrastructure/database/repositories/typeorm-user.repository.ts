@@ -1,11 +1,15 @@
-import {Repository} from "typeorm";
+import {DataSource, Repository} from "typeorm";
 import {User} from "../../../domain/models/user";
 import {UserMapper} from "../../mappers/user.mapper";
 import {UserEntity} from "../entities/user.entity";
 import {UserRepositoryPort} from "../../../application/ports/user-repository.port";
 
 export class TypeormUserRepository implements UserRepositoryPort {
-    constructor(private readonly repo: Repository<UserEntity>) {}
+    private repo: Repository<UserEntity>;
+
+    constructor(dataSource: DataSource) {
+        this.repo = dataSource.getRepository(UserEntity);
+    }
 
     async findByEmail(email: string): Promise<User | null> {
         const entity = await this.repo.findOne({ where: { email } });

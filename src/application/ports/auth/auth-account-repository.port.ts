@@ -6,6 +6,5 @@ export interface AuthAccountRepositoryPort {
         provider: AuthProvider;
         providerUserId: string;
     }): Promise<AuthProviderAccount | null>;
-    findByProviderIdentity(input: { provider: AuthProvider; providerUserId: string }): Promise<AuthProviderAccount | null>;
     save(account: AuthProviderAccount): Promise<AuthProviderAccount>;
 }

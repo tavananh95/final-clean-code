@@ -8,5 +8,15 @@ module.exports = {
   transform: {
     ...tsJestTransformCfg,
   },
+  collectCoverage: true,
+  collectCoverageFrom: [
+    'src/**/*.ts',
+    '!src/**/index.ts',
+    '!src/main.ts',
+    '!src/**/infrastructure/**',
+    '!src/**/fakes/**',
+  ],
+  coverageDirectory: 'coverage',
+  coverageReporters: ['text', 'lcov'],
     roots: ['<rootDir>/src', '<rootDir>/tests'],
 };
