@@ -1,8 +1,8 @@
-import {UserRepositoryPort} from "../../application/ports/user-repository.port";
+import {UserRepositoryPort} from "../../../application/ports/user-repository.port";
 import {Repository} from "typeorm";
-import {UserEntity} from "../typeorm/entities/user.entity";
-import {User} from "../../domain/models/user";
-import {UserMapper} from "../mappers/user.mapper";
+import {User} from "../../../domain/models/user";
+import {UserMapper} from "../../mappers/user.mapper";
+import {UserEntity} from "../entities/user.entity";
 
 export class TypeormUserRepository implements UserRepositoryPort {
     constructor(private readonly repo: Repository<UserEntity>) {}

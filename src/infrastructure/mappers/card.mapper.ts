@@ -1,6 +1,6 @@
-import {CardEntity} from "../database/card.entity";
 import {Card} from "../../domain/models/card";
 import {Category} from "../../domain/models/category";
+import {CardEntity} from "../database/entities/card.entity";
 
 
 export class CardMapper {
