@@ -1,7 +1,7 @@
 import { User } from '../../domain/models/user';
 import { AuthProviderAccount, AuthProvider } from '../../domain/models/auth-provider-account';
 import { UserRepositoryPort } from '../ports/user-repository.port';
-import { AuthAccountRepositoryPort } from '../ports/auth-account-repository.port';
+import { AuthAccountRepositoryPort } from '../ports/auth/auth-account-repository.port';
 
 export class FindOrCreateUserService {
     constructor(
