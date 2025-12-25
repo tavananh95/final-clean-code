@@ -1,4 +1,4 @@
-import { Card } from '../../domain/models/card';
+import { Card } from '../models/card';
 
 export interface CardRepository {
     /**

@@ -1,4 +1,4 @@
-import { CardRepository } from '../ports/card.repository';
+import {CardRepository} from "../ports/card.repository";
 
 export class AnswerCardService {
     constructor(private readonly cardRepository: CardRepository) {}
