@@ -20,3 +20,15 @@ describe('Card Domain Entity', () => {
         expect(card.category).toBe(Category.FIRST);
     });
 });
+
+describe('Card creation', () => {
+    it('creates a card in FIRST category', () => {
+        const card = Card.createNew({
+            id: 'id',
+            question: 'q',
+            answer: 'a'
+        });
+
+        expect(card.category).toBe(Category.FIRST);
+    });
+});

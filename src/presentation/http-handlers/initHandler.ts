@@ -1,5 +1,6 @@
 import { Application, Request, Response } from 'express';
 import { AppDataSource } from '../../infrastructure/database/data-source';
+import { CreateCardService } from "../../application/services/createCardService";
 import {AnswerCardService} from "../../application/services/answerCardService";
 import {TypeOrmCardRepository} from "../../infrastructure/database/repositories/typeorm-card.repository";
 import {CardHandler} from "./card.handler";
@@ -26,8 +27,14 @@ export const initHandlers = (app: Application) => {
     // ─────────────────────────
     const cardRepository = new TypeOrmCardRepository(AppDataSource);
     const answerCardService = new AnswerCardService(cardRepository);
-    const cardHandler = new CardHandler(answerCardService);
+    const createCardService = new CreateCardService(cardRepository);
 
+    const cardHandler = new CardHandler(
+        createCardService,
+        answerCardService
+    );
+
+    app.post('/cards', cardHandler.create);
     app.patch('/cards/:cardId/answer', cardHandler.answer);
 
     // ─────────────────────────
@@ -51,5 +58,6 @@ export const initHandlers = (app: Application) => {
 
     const authenticateHandler = new AuthenticateHandler(authenticateService);
 
+    
     app.post('/auth/provider', authenticateHandler.handle);
 };

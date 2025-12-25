@@ -23,4 +23,9 @@ export class TypeOrmCardRepository implements CardRepository {
         const persistenceData = CardMapper.toPersistence(card);
         await this.repo.save(persistenceData);
     }
+
+    async createCard(card: Card): Promise<void> {
+        const persistenceData = CardMapper.toPersistence(card);
+        await this.repo.save(persistenceData);
+    }
 }

@@ -13,4 +13,6 @@ export interface CardRepository {
      * @param card - The Card domain entity to update.
      */
     updateCard(card: Card): Promise<void>;
+
+    createCard(card: Card): Promise<void>;
 }

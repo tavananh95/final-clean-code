@@ -15,6 +15,21 @@ export class Card {
         this.props = props;
     }
 
+    static createNew(props: {
+        id: string;
+        question: string;
+        answer: string;
+        tag?: string;
+    }): Card {
+        return new Card({
+            id: props.id,
+            question: props.question,
+            answer: props.answer,
+            category: Category.FIRST,
+            tag: props.tag
+        });
+    }
+
     // Getters to access properties safely
     get id(): string {
         return this.props.id;
