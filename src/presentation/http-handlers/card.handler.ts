@@ -1,5 +1,5 @@
-import {AnswerCardService} from "../../application/services/answerCardService";
 import { Request, Response } from 'express';
+import {AnswerCardService} from "../../application/services/answerCardService";
 
 export class CardHandler {
     constructor(private readonly answerCard: AnswerCardService) {}

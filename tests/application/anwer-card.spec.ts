@@ -1,7 +1,7 @@
-import { CardRepository } from '../../src/domain/ports/card.repository';
+import { CardRepository } from '../../src/application/ports/card.repository';
 import { Card } from '../../src/domain/models/card';
 import {Category} from "../../src/domain/models/category";
-import {AnswerCardService} from "../../src/domain/services/answerCardService";
+import {AnswerCardService} from "../../src/application/services/answerCardService";
 
 
 const mockCardRepo = {
