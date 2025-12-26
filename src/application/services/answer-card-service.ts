@@ -1,7 +1,9 @@
 import {CardRepository} from "../ports/card.repository";
+import {CardNotFoundError} from "../../domain/errors/card-not-found-error";
 
 export class AnswerCardService {
-    constructor(private readonly cardRepository: CardRepository) {}
+    constructor(private readonly cardRepository: CardRepository) {
+    }
 
     /**
      * Executes the use case of answering a card.
@@ -12,7 +14,7 @@ export class AnswerCardService {
         const card = await this.cardRepository.getCardById(cardId);
 
         if (!card) {
-            throw new Error('Card not found');
+            throw new CardNotFoundError();
         }
 
         card.answerQuestion(isValid);

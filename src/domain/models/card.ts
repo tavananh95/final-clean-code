@@ -1,4 +1,5 @@
-import {Category} from "./category";
+import {Category, ORDERED_CATEGORIES} from "./category";
+import {calculateLeitnerInterval} from "../services/leitner-interval-calculator";
 
 export interface CardProps {
     id: string;
@@ -6,6 +7,7 @@ export interface CardProps {
     answer: string;
     category: Category;
     tag?: string;
+    nextReviewDate?: Date;
 }
 
 export class Card {
@@ -13,6 +15,23 @@ export class Card {
 
     constructor(props: CardProps) {
         this.props = props;
+    }
+
+    // Getters to access properties safely
+    get id(): string {
+        return this.props.id;
+    }
+
+    get category(): Category {
+        return this.props.category;
+    }
+
+    get nextReviewDate(): Date | undefined {
+        return this.props.nextReviewDate;
+    }
+
+    get state(): CardProps {
+        return {...this.props};
     }
 
     static createNew(props: {
@@ -26,32 +45,40 @@ export class Card {
             question: props.question,
             answer: props.answer,
             category: Category.FIRST,
-            tag: props.tag
+            tag: props.tag,
+            nextReviewDate: undefined
         });
-    }
-
-    // Getters to access properties safely
-    get id(): string {
-        return this.props.id;
-    }
-
-    get category(): Category {
-        return this.props.category;
-    }
-
-    // Helper to expose the full state (useful for mappers)
-    get state(): CardProps {
-        return { ...this.props };
     }
 
     /**
      * Updates the card category based on the user's answer validity.
      * @param isValid - true if the user answered correctly, false otherwise.
+     * @param now - current date for calculating next review date.
      */
-    answerQuestion(isValid: boolean): void {
+    answerQuestion(isValid: boolean, now: Date = new Date()): void {
         if (!isValid) {
             this.props.category = Category.FIRST;
+        } else {
+            this.promoteCategory();
         }
-        // TODO: Handle the 'isValid === true' case in a future User Story
+        if (this.props.category === Category.DONE) {
+            this.props.nextReviewDate = undefined;
+            return;
+        }
+
+        const intervalInDays = calculateLeitnerInterval(this.props.category);
+        const nextDate = new Date(now);
+        nextDate.setDate(nextDate.getDate() + intervalInDays);
+
+        this.props.nextReviewDate = nextDate;
     }
+
+    private promoteCategory(): void {
+        const currentIndex = ORDERED_CATEGORIES.indexOf(this.props.category);
+        if (currentIndex !== -1 && currentIndex < ORDERED_CATEGORIES.length - 1) {
+            this.props.category = ORDERED_CATEGORIES[currentIndex + 1];
+        }
+    }
+
+
 }

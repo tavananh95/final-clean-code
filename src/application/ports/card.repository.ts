@@ -1,4 +1,4 @@
-import { Card } from '../../domain/models/card';
+import {Card} from '../../domain/models/card';
 
 export interface CardRepository {
     /**
@@ -17,4 +17,6 @@ export interface CardRepository {
     createCard(card: Card): Promise<void>;
 
     findByTag(tag: string): Promise<Card[]>;
+
+    getCardsToReview(date: Date): Promise<Card[]>;
 }
