@@ -1,4 +1,5 @@
 import {Category, ORDERED_CATEGORIES} from "./category";
+import {calculateLeitnerInterval} from "../services/leitner-interval-calculator";
 
 export interface CardProps {
     id: string;
@@ -25,7 +26,10 @@ export class Card {
         return this.props.category;
     }
 
-    // Helper to expose the full state (useful for mappers)
+    get nextReviewDate(): Date | undefined {
+        return this.props.nextReviewDate;
+    }
+
     get state(): CardProps {
         return {...this.props};
     }
@@ -41,20 +45,32 @@ export class Card {
             question: props.question,
             answer: props.answer,
             category: Category.FIRST,
-            tag: props.tag
+            tag: props.tag,
+            nextReviewDate: undefined
         });
     }
 
     /**
      * Updates the card category based on the user's answer validity.
      * @param isValid - true if the user answered correctly, false otherwise.
+     * @param now - current date for calculating next review date.
      */
-    answerQuestion(isValid: boolean): void {
+    answerQuestion(isValid: boolean, now: Date = new Date()): void {
         if (!isValid) {
             this.props.category = Category.FIRST;
         } else {
             this.promoteCategory();
         }
+        if (this.props.category === Category.DONE) {
+            this.props.nextReviewDate = undefined;
+            return;
+        }
+
+        const intervalInDays = calculateLeitnerInterval(this.props.category);
+        const nextDate = new Date(now);
+        nextDate.setDate(nextDate.getDate() + intervalInDays);
+
+        this.props.nextReviewDate = nextDate;
     }
 
     private promoteCategory(): void {
