@@ -1,4 +1,4 @@
-import {Category} from "./category";
+import {Category, ORDERED_CATEGORIES} from "./category";
 
 export interface CardProps {
     id: string;
@@ -6,18 +6,8 @@ export interface CardProps {
     answer: string;
     category: Category;
     tag?: string;
+    nextReviewDate?: Date;
 }
-
-const CATEGORY_FLOW = [
-    Category.FIRST,
-    Category.SECOND,
-    Category.THIRD,
-    Category.FOURTH,
-    Category.FIFTH,
-    Category.SIXTH,
-    Category.SEVENTH,
-    Category.DONE,
-];
 
 export class Card {
     private props: CardProps;
@@ -68,9 +58,9 @@ export class Card {
     }
 
     private promoteCategory(): void {
-        const currentIndex = CATEGORY_FLOW.indexOf(this.props.category);
-        if (currentIndex !== -1 && currentIndex < CATEGORY_FLOW.length - 1) {
-            this.props.category = CATEGORY_FLOW[currentIndex + 1];
+        const currentIndex = ORDERED_CATEGORIES.indexOf(this.props.category);
+        if (currentIndex !== -1 && currentIndex < ORDERED_CATEGORIES.length - 1) {
+            this.props.category = ORDERED_CATEGORIES[currentIndex + 1];
         }
     }
 
