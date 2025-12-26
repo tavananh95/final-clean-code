@@ -16,14 +16,14 @@ export class CardHandler {
             res.status(400).json({message: 'Body must be an object'});
             return
         }
-            const validationReqBody = createCardValidation.validate(req.body)
+        const validationReqBody = createCardValidation.validate(req.body)
 
-            if (validationReqBody.error) {
-                res.status(400).send(generateValidationErrorMessage(validationReqBody.error.details))
-                return
-            }
-            const card = await this.createCard.execute(validationReqBody.value);
-            return res.status(201).json(card.state);
+        if (validationReqBody.error) {
+            res.status(400).send(generateValidationErrorMessage(validationReqBody.error.details))
+            return
+        }
+        const card = await this.createCard.execute(validationReqBody.value);
+        return res.status(201).json(card.state);
 
     };
 
