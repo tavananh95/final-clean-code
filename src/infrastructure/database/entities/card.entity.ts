@@ -1,6 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, Column} from 'typeorm';
 
-@Entity({ name: 'cards' })
+@Entity({name: 'cards'})
 export class CardEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
@@ -14,6 +14,9 @@ export class CardEntity {
     @Column()
     category!: string;
 
-    @Column({ nullable: true })
+    @Column({nullable: true})
     tag?: string;
+
+    @Column({type: 'timestamp', nullable: true})
+    nextReviewDate?: Date;
 }

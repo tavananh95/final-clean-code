@@ -1,5 +1,5 @@
-import {DataSource, ILike, Repository} from 'typeorm';
-import { Card } from '../../../domain/models/card';
+import {DataSource, ILike, IsNull, LessThanOrEqual, Not, Repository} from 'typeorm';
+import {Card} from '../../../domain/models/card';
 import {CardMapper} from "../../mappers/card.mapper";
 import {CardEntity} from "../entities/card.entity";
 import {CardRepository} from "../../../application/ports/card.repository";
@@ -11,8 +11,25 @@ export class TypeOrmCardRepository implements CardRepository {
         this.repo = dataSource.getRepository(CardEntity);
     }
 
+    async getCardsToReview(date: Date): Promise<Card[]> {
+        const entities = await this.repo.find({
+            where: [
+                {
+                    nextReviewDate: LessThanOrEqual(date),
+                    category: Not('Done')
+                },
+                {
+                    nextReviewDate: IsNull(),
+                    category: Not('Done')
+                }
+            ],
+            order: {nextReviewDate: 'ASC'},
+        });
+        return entities.map(CardMapper.toDomain);
+    }
+
     async getCardById(cardId: string): Promise<Card | undefined> {
-        const entity = await this.repo.findOneBy({ id: cardId });
+        const entity = await this.repo.findOneBy({id: cardId});
         if (!entity) {
             return undefined;
         }
@@ -31,7 +48,7 @@ export class TypeOrmCardRepository implements CardRepository {
 
     async findByTag(tag: string): Promise<Card[]> {
         const entities = await this.repo.find({
-            where: { tag: ILike(tag) },
+            where: {tag: ILike(tag)},
             order: {category: 'ASC'},
         });
 
