@@ -10,7 +10,6 @@ import {
 import {FindOrCreateUserService} from "../../../application/services/find-or-create-user-service";
 import {JwtTokenService} from "../../../infrastructure/database/repositories/fake-auth/fake-token.service";
 import {TypeormUserRepository} from "../../../infrastructure/database/repositories/typeorm-user.repository";
-import {AuthenticateService} from "../../../application/services/authenticate-service";
 import {AuthenticateHandler} from "./authenticate/authenticate.handler";
 import {GetCardsByTagService} from "../../../application/services/get-cards-by-tag-service";
 import {CreateCardHandler} from "./cards/create-card.handler";
@@ -18,6 +17,9 @@ import {AnswerCardHandler} from "./cards/answer-card.handler";
 import {GetCardsByTagHandler} from "./cards/get-cards-by-tag.handler";
 import {GetQuizzCardsService} from "../../../application/services/get-quizz-cards-service";
 import {GetQuizzCardsHandler} from "./cards/get-quizz-cards.handler";
+import {AuthenticateService} from "../../../application/services/auth/authenticate-service";
+import {UpdateCardTagHandler} from "./cards/update-card-tag.handler";
+import {UpdateCardTagService} from "../../../application/services/update-card-tag-service";
 
 
 export const initHandlers = (app: Application) => {
@@ -59,8 +61,9 @@ export const initHandlers = (app: Application) => {
     const createCardService = new CreateCardService(cardRepository);
     const getCardsByTagService = new GetCardsByTagService(cardRepository);
     const getQuizzCardsService = new GetQuizzCardsService(cardRepository);
-
+    const updateCardTagService = new UpdateCardTagService(cardRepository);
     const createCardHandler = new CreateCardHandler(createCardService);
+
     app.post('/cards', createCardHandler.handle);
 
     const getQuizzCardsHandler = new GetQuizzCardsHandler(getQuizzCardsService);
@@ -71,5 +74,8 @@ export const initHandlers = (app: Application) => {
 
     const getCardsByTagHandler = new GetCardsByTagHandler(getCardsByTagService);
     app.get('/cards', getCardsByTagHandler.handle);
+
+    const updateCardTagHandler = new UpdateCardTagHandler(updateCardTagService);
+    app.patch('/cards/:cardId/tag', updateCardTagHandler.handle);
 
 };

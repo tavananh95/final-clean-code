@@ -1,6 +1,6 @@
-import { TokenServicePort } from '../ports/token-service.port';
-import {OidcProviderPort} from "../ports/auth/oidc-provider.port";
-import {FindOrCreateUserService} from "./find-or-create-user-service";
+import { TokenServicePort } from '../../ports/token-service.port';
+import {OidcProviderPort} from "../../ports/auth/oidc-provider.port";
+import {FindOrCreateUserService} from "../find-or-create-user-service";
 
 export class AuthenticateService {
     constructor(

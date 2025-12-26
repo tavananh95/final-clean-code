@@ -72,13 +72,13 @@ export class Card {
 
         this.props.nextReviewDate = nextDate;
     }
-
     private promoteCategory(): void {
         const currentIndex = ORDERED_CATEGORIES.indexOf(this.props.category);
         if (currentIndex !== -1 && currentIndex < ORDERED_CATEGORIES.length - 1) {
             this.props.category = ORDERED_CATEGORIES[currentIndex + 1];
         }
     }
-
-
+    updateTag(tag?: string): void {
+        this.props.tag = tag;
+    }
 }

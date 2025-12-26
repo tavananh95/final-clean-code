@@ -3,7 +3,7 @@ import { TokenServicePort } from '../../src/application/ports/token-service.port
 import { AuthProvider } from '../../src/domain/models/auth-provider-account';
 import { User } from '../../src/domain/models/user';
 import {FindOrCreateUserService} from "../../src/application/services/find-or-create-user-service";
-import {AuthenticateService} from "../../src/application/services/authenticate-service";
+import {AuthenticateService} from "../../src/application/services/auth/authenticate-service";
 
 const mockOidc = {
     verifyAndGetUserInfo: jest.fn(),
