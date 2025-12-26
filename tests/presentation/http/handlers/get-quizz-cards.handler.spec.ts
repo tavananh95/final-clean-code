@@ -86,7 +86,7 @@ describe('GetQuizzCardsHandler', () => {
                 answer: 'A1',
                 category: Category.FIRST,
                 tag: 'T1',
-                nextReviewDate: new Date('2024-01-01') // Cette date ne doit PAS être dans la réponse
+                nextReviewDate: new Date('2024-01-01')
             }),
             new Card({
                 id: '2',

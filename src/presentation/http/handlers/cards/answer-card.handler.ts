@@ -1,8 +1,9 @@
-// src/presentation/http/handlers/answer-card.handler.ts
 import {Request, Response} from 'express';
 import {AnswerCardService} from "../../../../application/services/answer-card-service";
 import {CardNotFoundError} from "../../../../domain/errors/card-not-found-error";
 import {isUUID} from "class-validator";
+import {handleHttpError} from "../../errors/http-error-handler";
+import {GeneralRequestValidationError} from "../../errors/general-request-validation-error";
 
 
 export class AnswerCardHandler {
@@ -11,23 +12,20 @@ export class AnswerCardHandler {
 
     handle = async (req: Request, res: Response) => {
         const {cardId} = req.params;
-        const {isValid} = req.body;
-
-
-        if (typeof isValid !== 'boolean') {
-            return res.status(400).json({message: 'isValid must be boolean'});
-        }
-        if (!isUUID(cardId)) {
-            return res.status(400).json({message: 'Invalid cardId format'});
-        }
         try {
+            const {isValid} = req.body;
+
+
+            if (typeof isValid !== 'boolean') {
+                throw new GeneralRequestValidationError("isValid must be boolean")
+            }
+            if (!isUUID(cardId)) {
+                throw new GeneralRequestValidationError('Invalid cardId format')
+            }
             await this.answerCard.execute(cardId, isValid);
             return res.status(204).send();
-        } catch (error: any) {
-            if (error instanceof CardNotFoundError) {
-                return res.status(404).json({message: 'Card not found'});
-            }
-            return res.status(500).json({message: 'Internal server error'});
+        } catch (error) {
+            return handleHttpError(res, error);
         }
     };
 }

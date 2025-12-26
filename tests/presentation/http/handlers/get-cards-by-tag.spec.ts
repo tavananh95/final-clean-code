@@ -38,7 +38,7 @@ describe('getCardsByTagHandler', () => {
 
         // ASSERT
         expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith({ message: 'tag query parameter is required' });
+        expect(res.json).toHaveBeenCalledWith({ message: 'Tag query parameter is required' });
         expect(mockGetCardsByTag.execute).not.toHaveBeenCalled();
     });
 
@@ -53,7 +53,7 @@ describe('getCardsByTagHandler', () => {
 
         // ASSERT
         expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith({ message: 'tag query parameter is required' });
+        expect(res.json).toHaveBeenCalledWith({ message: 'Tag query parameter is required' });
         expect(mockGetCardsByTag.execute).not.toHaveBeenCalled();
     });
 
@@ -106,7 +106,7 @@ describe('getCardsByTagHandler', () => {
 
         // ASSERT
         expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith({ message: 'tag query parameter is required' });
+        expect(res.json).toHaveBeenCalledWith({ message: 'Tag query parameter is required' });
         expect(mockGetCardsByTag.execute).not.toHaveBeenCalled();
     });
 });

@@ -15,3 +15,4 @@ export const generateValidationErrorMessage = (
     })
     return formattedErrors
 }
+
