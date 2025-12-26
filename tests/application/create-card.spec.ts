@@ -1,4 +1,4 @@
-import { CreateCardService } from '../../src/application/services/createCardService';
+import { CreateCardService } from '../../src/application/services/create-card-service';
 import { CardRepository } from '../../src/application/ports/card.repository';
 import { Category } from '../../src/domain/models/category';
 

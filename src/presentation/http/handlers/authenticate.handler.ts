@@ -1,6 +1,5 @@
-// src/presentation/http/handlers/authenticate.handler.ts
 import { Request, Response } from 'express';
-import {AuthenticateService} from "../../application/services/authenticate-service";
+import {AuthenticateService} from "../../../application/services/authenticate-service";
 
 export class AuthenticateHandler {
     constructor(private readonly authenticate: AuthenticateService) {}
