@@ -1,6 +1,6 @@
-import { Application, Request, Response } from 'express';
-import { AppDataSource } from '../../../infrastructure/database/data-source';
-import { CreateCardService } from "../../../application/services/create-card-service";
+import {Application, Request, Response} from 'express';
+import {AppDataSource} from '../../../infrastructure/database/data-source';
+import {CreateCardService} from "../../../application/services/create-card-service";
 import {AnswerCardService} from "../../../application/services/answer-card-service";
 import {TypeOrmCardRepository} from "../../../infrastructure/database/repositories/typeorm-card.repository";
 import {FakeOidcProvider} from "../../../infrastructure/database/repositories/fake-auth/fake-oidc-provider";
@@ -16,13 +16,15 @@ import {GetCardsByTagService} from "../../../application/services/get-cards-by-t
 import {CreateCardHandler} from "./cards/create-card.handler";
 import {AnswerCardHandler} from "./cards/answer-card.handler";
 import {GetCardsByTagHandler} from "./cards/get-cards-by-tag.handler";
+import {GetQuizzCardsService} from "../../../application/services/get-quizz-cards-service";
+import {GetQuizzCardsHandler} from "./cards/get-quizz-cards.handler";
 
 
 export const initHandlers = (app: Application) => {
     // Health check
     // ─────────────────────────
     app.get('/health', (_: Request, res: Response) => {
-        res.send({ message: 'ping' });
+        res.send({message: 'ping'});
     });
 
     // ─────────────────────────
@@ -56,9 +58,13 @@ export const initHandlers = (app: Application) => {
     const answerCardService = new AnswerCardService(cardRepository);
     const createCardService = new CreateCardService(cardRepository);
     const getCardsByTagService = new GetCardsByTagService(cardRepository);
+    const getQuizzCardsService = new GetQuizzCardsService(cardRepository);
 
     const createCardHandler = new CreateCardHandler(createCardService);
     app.post('/cards', createCardHandler.handle);
+
+    const getQuizzCardsHandler = new GetQuizzCardsHandler(getQuizzCardsService);
+    app.get('/cards/quizz', getQuizzCardsHandler.handle);
 
     const answerCardHandler = new AnswerCardHandler(answerCardService);
     app.patch('/cards/:cardId/answer', answerCardHandler.handle);
