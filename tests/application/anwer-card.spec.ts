@@ -45,4 +45,27 @@ describe('AnswerCardService', () => {
             .rejects
             .toThrow('Card not found');
     });
+
+    it('should promote the card category when answering correctly', async () => {
+        // ARRANGE
+        const service = new AnswerCardService(mockCardRepo);
+        const existingCard = new Card({
+            id: '123',
+            question: 'Q',
+            answer: 'A',
+            category: Category.FIRST
+        });
+
+        (mockCardRepo.getCardById as jest.Mock).mockResolvedValue(existingCard);
+
+        // ACT
+        await service.execute('123', true);
+
+        // ASSERT
+        expect(mockCardRepo.updateCard).toHaveBeenCalledWith(
+            expect.objectContaining({
+                category: Category.SECOND
+            })
+        );
+    });
 });
