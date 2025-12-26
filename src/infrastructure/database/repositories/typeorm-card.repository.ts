@@ -1,4 +1,4 @@
-import { DataSource, Repository } from 'typeorm';
+import {DataSource, ILike, Repository} from 'typeorm';
 import { Card } from '../../../domain/models/card';
 import {CardMapper} from "../../mappers/card.mapper";
 import {CardEntity} from "../entities/card.entity";
@@ -27,5 +27,14 @@ export class TypeOrmCardRepository implements CardRepository {
     async createCard(card: Card): Promise<void> {
         const persistenceData = CardMapper.toPersistence(card);
         await this.repo.save(persistenceData);
+    }
+
+    async findByTag(tag: string): Promise<Card[]> {
+        const entities = await this.repo.find({
+            where: { tag: ILike(tag) },
+            order: {category: 'ASC'},
+        });
+
+        return entities.map(CardMapper.toDomain);
     }
 }
