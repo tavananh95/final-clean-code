@@ -20,6 +20,7 @@ import {GetQuizzCardsHandler} from "./cards/get-quizz-cards.handler";
 import {AuthenticateService} from "../../../application/services/auth/authenticate-service";
 import {UpdateCardTagHandler} from "./cards/update-card-tag.handler";
 import {UpdateCardTagService} from "../../../application/services/update-card-tag-service";
+import {Route} from "./route";
 
 
 export const initHandlers = (app: Application) => {
@@ -64,18 +65,18 @@ export const initHandlers = (app: Application) => {
     const updateCardTagService = new UpdateCardTagService(cardRepository);
     const createCardHandler = new CreateCardHandler(createCardService);
 
-    app.post('/cards', createCardHandler.handle);
+    app.post(Route.CARD, createCardHandler.handle);
 
     const getQuizzCardsHandler = new GetQuizzCardsHandler(getQuizzCardsService);
-    app.get('/cards/quizz', getQuizzCardsHandler.handle);
+    app.get(Route.CARD + '/quizz', getQuizzCardsHandler.handle);
 
     const answerCardHandler = new AnswerCardHandler(answerCardService);
-    app.patch('/cards/:cardId/answer', answerCardHandler.handle);
+    app.patch(Route.CARD + '/:cardId/answer', answerCardHandler.handle);
 
     const getCardsByTagHandler = new GetCardsByTagHandler(getCardsByTagService);
-    app.get('/cards', getCardsByTagHandler.handle);
+    app.get(Route.CARD, getCardsByTagHandler.handle);
 
     const updateCardTagHandler = new UpdateCardTagHandler(updateCardTagService);
-    app.patch('/cards/:cardId/tag', updateCardTagHandler.handle);
+    app.patch(Route.CARD +'/:cardId/tag', updateCardTagHandler.handle);
 
 };
