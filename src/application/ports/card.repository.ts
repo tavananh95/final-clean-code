@@ -15,4 +15,6 @@ export interface CardRepository {
     updateCard(card: Card): Promise<void>;
 
     createCard(card: Card): Promise<void>;
+
+    findByTag(tag: string): Promise<Card[]>;
 }
