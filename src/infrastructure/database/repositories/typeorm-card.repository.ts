@@ -3,6 +3,7 @@ import {Card} from '../../../domain/models/card';
 import {CardMapper} from "../../mappers/card.mapper";
 import {CardEntity} from "../entities/card.entity";
 import {CardRepository} from "../../../application/ports/card.repository";
+import {Category} from "../../../domain/models/category";
 
 export class TypeOrmCardRepository implements CardRepository {
     private repo: Repository<CardEntity>;
@@ -16,11 +17,11 @@ export class TypeOrmCardRepository implements CardRepository {
             where: [
                 {
                     nextReviewDate: LessThanOrEqual(date),
-                    category: Not('Done')
+                    category: Not(Category.DONE)
                 },
                 {
                     nextReviewDate: IsNull(),
-                    category: Not('Done')
+                    category: Not(Category.DONE)
                 }
             ],
             order: {nextReviewDate: 'ASC'},
