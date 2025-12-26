@@ -54,4 +54,8 @@ export class Card {
         }
         // TODO: Handle the 'isValid === true' case in a future User Story
     }
+
+    updateTag(tag?: string): void {
+        this.props.tag = tag;
+    }
 }
