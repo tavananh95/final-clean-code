@@ -2,7 +2,7 @@ import { CardRepository } from "../ports/card.repository";
 import { Card } from "../../domain/models/card";
 import { randomUUID } from "crypto";
 
-interface CreateCardCommand {
+export interface CreateCardCommand {
     question: string;
     answer: string;
     tag?: string;

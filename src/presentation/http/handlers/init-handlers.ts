@@ -1,17 +1,17 @@
 import { Application, Request, Response } from 'express';
-import { AppDataSource } from '../../infrastructure/database/data-source';
-import { CreateCardService } from "../../application/services/createCardService";
-import {AnswerCardService} from "../../application/services/answerCardService";
-import {TypeOrmCardRepository} from "../../infrastructure/database/repositories/typeorm-card.repository";
+import { AppDataSource } from '../../../infrastructure/database/data-source';
+import { CreateCardService } from "../../../application/services/create-card-service";
+import {AnswerCardService} from "../../../application/services/answer-card-service";
+import {TypeOrmCardRepository} from "../../../infrastructure/database/repositories/typeorm-card.repository";
 import {CardHandler} from "./card.handler";
-import {FakeOidcProvider} from "../../infrastructure/database/repositories/fake-auth/fake-oidc-provider";
+import {FakeOidcProvider} from "../../../infrastructure/database/repositories/fake-auth/fake-oidc-provider";
 import {
     FakeAuthAccountRepository
-} from "../../infrastructure/database/repositories/fake-auth/fake-auth-account.repository";
-import {FindOrCreateUserService} from "../../application/services/find-or-create-user-service";
-import {JwtTokenService} from "../../infrastructure/database/repositories/fake-auth/fake-token.service";
-import {TypeormUserRepository} from "../../infrastructure/database/repositories/typeorm-user.repository";
-import {AuthenticateService} from "../../application/services/authenticate-service";
+} from "../../../infrastructure/database/repositories/fake-auth/fake-auth-account.repository";
+import {FindOrCreateUserService} from "../../../application/services/find-or-create-user-service";
+import {JwtTokenService} from "../../../infrastructure/database/repositories/fake-auth/fake-token.service";
+import {TypeormUserRepository} from "../../../infrastructure/database/repositories/typeorm-user.repository";
+import {AuthenticateService} from "../../../application/services/authenticate-service";
 import {AuthenticateHandler} from "./authenticate.handler";
 
 

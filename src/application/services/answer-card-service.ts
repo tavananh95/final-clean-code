@@ -15,10 +15,8 @@ export class AnswerCardService {
             throw new Error('Card not found');
         }
 
-        // Apply domain logic
         card.answerQuestion(isValid);
 
-        // Persist the state
         await this.cardRepository.updateCard(card);
     }
 }

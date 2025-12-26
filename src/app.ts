@@ -1,5 +1,5 @@
 import express, { type Request, type Response } from 'express';
-import {initHandlers} from "./presentation/http-handlers/initHandler";
+import {initHandlers} from "./presentation/http/handlers/init-handlers";
 
 export function createApp() {
     const app = express();
