@@ -19,4 +19,7 @@ export class CardEntity {
 
     @Column({type: 'timestamp', nullable: true})
     nextReviewDate?: Date;
+
+    @Column({ type: 'timestamp', nullable: true })
+    lastQuizzDate?: Date;
 }

@@ -6,6 +6,15 @@ export class GetQuizzCardsService {
     }
 
     async execute(date: Date): Promise<Card[]> {
-        return this.cardRepository.getCardsToReview(date);
-    }
+    const cards = await this.cardRepository.getCardsToReview(date);
+
+    const today = date.toDateString();
+    const cardsToReturn = cards.filter(card =>
+        !card.lastQuizzDate || card.lastQuizzDate.toDateString() !== today
+    );
+
+    cardsToReturn.forEach(card => card.setLastQuizzDate(date));
+
+    return cardsToReturn;
+}
 }

@@ -8,6 +8,7 @@ export interface CardProps {
     category: Category;
     tag?: string;
     nextReviewDate?: Date;
+    lastQuizzDate?: Date;
 }
 
 export class Card {
@@ -34,6 +35,14 @@ export class Card {
         return {...this.props};
     }
 
+    get lastQuizzDate(): Date | undefined {
+        return this.props.lastQuizzDate;
+    }
+
+    setLastQuizzDate(date: Date) {
+        this.props.lastQuizzDate = date;
+    }
+
     static createNew(props: {
         id: string;
         question: string;
@@ -53,7 +62,8 @@ export class Card {
             answer: props.answer,
             category: Category.FIRST,
             tag: props.tag,
-            nextReviewDate: undefined
+            nextReviewDate: undefined,
+            lastQuizzDate: undefined
         });
     }
 

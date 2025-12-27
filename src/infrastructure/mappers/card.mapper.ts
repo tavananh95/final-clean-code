@@ -14,7 +14,8 @@ export class CardMapper {
             answer: entity.answer,
             category: entity.category as Category, // Cast string to Enum
             tag: entity.tag,
-            nextReviewDate: entity.nextReviewDate
+            nextReviewDate: entity.nextReviewDate,
+            lastQuizzDate: entity.lastQuizzDate
         });
     }
 
@@ -28,7 +29,8 @@ export class CardMapper {
             answer: domain.state.answer,
             category: domain.state.category,
             tag: domain.state.tag,
-            nextReviewDate: domain.state.nextReviewDate
+            nextReviewDate: domain.state.nextReviewDate,
+            lastQuizzDate: domain.state.lastQuizzDate
         };
     }
 }
