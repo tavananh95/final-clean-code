@@ -3,24 +3,21 @@ import {initHandlers} from "./presentation/http/handlers/init-handlers";
 
 export function createApp() {
     const app = express();
-    const port = 3000;
     const cors = require('cors');
 
-    app.use(cors({
-        origin: "http://localhost:5173"
-    }));
+    app.use(cors({ origin: "http://localhost:5173" }));
     app.use(express.json());
     initHandlers(app);
 
-    try {
-        app.listen(port, () => {
-            console.log(`Server running on http://localhost:${port}`);
-            // swaggerDocs(app, port);
-        });
-    } catch (error) {
-        if (error instanceof Error) {
-            console.error(error.message);
-        }
-    }
     return app;
+}
+
+export function startServer() {
+    const app = createApp();
+    const port = 3000;
+    try {
+        app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
+    } catch (error) {
+        if (error instanceof Error) console.error(error.message);
+    }
 }

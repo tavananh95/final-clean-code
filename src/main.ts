@@ -7,7 +7,7 @@ import {SendDueNotifications} from "./application/services/notification/send-due
 import {startNotificationCron} from "./infrastructure/cron/notification.cron";
 import {AppDataSource} from "./infrastructure/database/data-source";
 import {FakeEmailNotificationProvider} from "./infrastructure/providers/fake-email-notification-provider";
-
+import { startServer } from "./app";
 
 async function bootstrap() {
     // db
@@ -28,9 +28,7 @@ async function bootstrap() {
     const app = createApp();
     const port = 3000;
 
-    app.listen(port, () => {
-        console.log(`Server running on port ${port}`);
-    });
+    startServer();
 }
 
 bootstrap();
