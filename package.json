@@ -9,7 +9,7 @@
     "start:dev:js": "nodemon -e ts --exec \"tsc && node ./dist/main.js\"",
     "build": "tsc",
     "start": "node dist/main.js",
-    "test": "jest --coverage",
+    "test": "jest --coverage --no-cache",
     "test:watch": "jest --watch"
   },
   "keywords": [],

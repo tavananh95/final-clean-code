@@ -51,10 +51,6 @@ describe('UpdateCardTagService', () => {
         (mockRepo.getCardById as jest.Mock).mockResolvedValue(card);
 
         // ACT
-        const req = {
-            params: { cardId: '123' },
-            body: { tag: null },
-        } as unknown as Request;
 
         await service.execute({ cardId: '123', tag: null });
 
