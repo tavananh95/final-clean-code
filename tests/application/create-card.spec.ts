@@ -1,26 +1,41 @@
-import { CreateCardService } from '../../src/application/services/create-card-service';
-import { CardRepository } from '../../src/application/ports/card.repository';
-import { Category } from '../../src/domain/models/category';
+import {CreateCardService} from '../../src/application/services/create-card-service';
+import {Category} from '../../src/domain/models/category';
+import {QuizzRepository} from "../../src/application/ports/quizz.repository";
+import {CardWriter} from "../../src/application/ports/card-writer.port";
 
-const mockCardRepo = {
-    createCard: jest.fn(),
-} as unknown as CardRepository;
+const mockCardWriter = {
+    save: jest.fn(),
+} as unknown as CardWriter;
+
+const mockQuizzRepo = {
+    save: jest.fn(),
+    delete: jest.fn()
+} as unknown as QuizzRepository;
 
 describe('CreateCardService', () => {
-    it('should create a card in FIRST category and persist it', async () => {
-        // Arrange
-        const service = new CreateCardService(mockCardRepo);
-        const command = { question: 'What is SOLID?', answer: 'Design principles', tag: 'architecture' };
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it('should create a card in FIRST category and schedule it immediately in Quizz', async () => {
+        const service = new CreateCardService(mockCardWriter, mockQuizzRepo);
+        const command = {question: 'Q', answer: 'A', tag: 'tag'};
+
+        const now = new Date('2024-01-01T12:00:00Z');
+        jest.useFakeTimers().setSystemTime(now);
 
         // Act
         const card = await service.execute(command);
 
         // Assert
-        expect(card.category).toBe(Category.FIRST);
-        expect(card.state.question).toBe(command.question);
-        expect(card.state.answer).toBe(command.answer);
-        expect(card.state.tag).toBe(command.tag);
+        expect(mockQuizzRepo.save).toHaveBeenCalledWith(
+            expect.objectContaining({
+                cardId: card.id,
+                nextReviewDate: now
+            })
+        );
 
-        expect(mockCardRepo.createCard).toHaveBeenCalledWith(card);
+        jest.useRealTimers();
     });
 });

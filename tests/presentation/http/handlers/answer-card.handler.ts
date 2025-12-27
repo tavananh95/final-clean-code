@@ -1,15 +1,8 @@
 import {Request, Response} from 'express';
 import {AnswerCardHandler} from '../../../../src/presentation/http/handlers/cards/answer-card.handler';
 import {AnswerCardService} from '../../../../src/application/services/answer-card-service';
+import {makeRes} from "../../utils";
 
-
-function makeRes() {
-    const res: Partial<Response> = {};
-    res.status = jest.fn().mockReturnValue(res);
-    res.json = jest.fn().mockReturnValue(res);
-    res.send = jest.fn().mockReturnValue(res);
-    return res as Response;
-}
 
 describe('AnswerCardHandler', () => {
     const mockAnswerCardService = {

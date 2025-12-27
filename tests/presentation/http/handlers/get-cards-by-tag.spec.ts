@@ -1,18 +1,11 @@
-import { Request, Response } from 'express';
+import {Request, Response} from 'express';
 import {GetCardsByTagService} from "../../../../src/application/services/get-cards-by-tag-service";
 import {Card} from "../../../../src/domain/models/card";
 import {Category} from "../../../../src/domain/models/category";
 import {CreateCardService} from "../../../../src/application/services/create-card-service";
 import {AnswerCardService} from "../../../../src/application/services/answer-card-service";
 import {GetCardsByTagHandler} from "../../../../src/presentation/http/handlers/cards/get-cards-by-tag.handler";
-
-
-function makeRes() {
-    const res: Partial<Response> = {};
-    res.status = jest.fn().mockReturnValue(res);
-    res.json = jest.fn().mockReturnValue(res);
-    return res as Response;
-}
+import {makeRes} from "../../utils";
 
 describe('getCardsByTagHandler', () => {
     const mockCreateCard = {
@@ -30,7 +23,7 @@ describe('getCardsByTagHandler', () => {
     it('should return 400 if tag is missing', async () => {
         // ARRANGE
         const handler = new GetCardsByTagHandler(mockGetCardsByTag as any);
-        const req = { query: {} } as unknown as Request;
+        const req = {query: {}} as unknown as Request;
         const res = makeRes();
 
         // ACT
@@ -38,14 +31,14 @@ describe('getCardsByTagHandler', () => {
 
         // ASSERT
         expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith({ message: 'Tag query parameter is required' });
+        expect(res.json).toHaveBeenCalledWith({message: 'Tag query parameter is required'});
         expect(mockGetCardsByTag.execute).not.toHaveBeenCalled();
     });
 
     it('should return 400 if tag is blank/whitespace', async () => {
         // ARRANGE
         const handler = new GetCardsByTagHandler(mockGetCardsByTag as any);
-        const req = { query: { tag: '   ' } } as unknown as Request;
+        const req = {query: {tag: '   '}} as unknown as Request;
         const res = makeRes();
 
         // ACT
@@ -53,7 +46,7 @@ describe('getCardsByTagHandler', () => {
 
         // ASSERT
         expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith({ message: 'Tag query parameter is required' });
+        expect(res.json).toHaveBeenCalledWith({message: 'Tag query parameter is required'});
         expect(mockGetCardsByTag.execute).not.toHaveBeenCalled();
     });
 
@@ -62,13 +55,13 @@ describe('getCardsByTagHandler', () => {
         const handler = new GetCardsByTagHandler(mockGetCardsByTag as any);
 
         const cards = [
-            new Card({ id: '1', question: 'Q1', answer: 'A1', category: Category.FIRST, tag: 'learning' }),
-            new Card({ id: '2', question: 'Q2', answer: 'A2', category: Category.SECOND, tag: 'learning' }),
+            new Card({id: '1', question: 'Q1', answer: 'A1', category: Category.FIRST, tag: 'learning'}),
+            new Card({id: '2', question: 'Q2', answer: 'A2', category: Category.SECOND, tag: 'learning'}),
         ];
 
         (mockGetCardsByTag.execute as jest.Mock).mockResolvedValue(cards);
 
-        const req = { query: { tag: '  learning  ' } } as unknown as Request;
+        const req = {query: {tag: '  learning  '}} as unknown as Request;
         const res = makeRes();
 
         // ACT
@@ -98,7 +91,7 @@ describe('getCardsByTagHandler', () => {
     it('should return 400 if tag is not a string (e.g. tag[]=x)', async () => {
         // ARRANGE
         const handler = new GetCardsByTagHandler(mockGetCardsByTag as any);
-        const req = { query: { tag: ['learning'] } } as unknown as Request;
+        const req = {query: {tag: ['learning']}} as unknown as Request;
         const res = makeRes();
 
         // ACT
@@ -106,7 +99,7 @@ describe('getCardsByTagHandler', () => {
 
         // ASSERT
         expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith({ message: 'Tag query parameter is required' });
+        expect(res.json).toHaveBeenCalledWith({message: 'Tag query parameter is required'});
         expect(mockGetCardsByTag.execute).not.toHaveBeenCalled();
     });
 });

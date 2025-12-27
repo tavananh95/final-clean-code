@@ -1,15 +1,8 @@
 // tests/presentation/update-card-tag.handler.spec.ts
-import { Request, Response } from 'express';
+import {Request, Response} from 'express';
 import {UpdateCardTagService} from "../../../../src/application/services/update-card-tag-service";
 import {UpdateCardTagHandler} from "../../../../src/presentation/http/handlers/cards/update-card-tag.handler";
-
-function makeRes() {
-    const res: Partial<Response> = {};
-    res.status = jest.fn().mockReturnValue(res);
-    res.json = jest.fn().mockReturnValue(res);
-    res.send = jest.fn().mockReturnValue(res);
-    return res as Response;
-}
+import {makeRes} from "../../utils";
 
 describe('UpdateCardTagHandler', () => {
     const mockService = {
@@ -21,7 +14,7 @@ describe('UpdateCardTagHandler', () => {
     it('should return 400 if body is an array', async () => {
         // ARRANGE
         const handler = new UpdateCardTagHandler(mockService);
-        const req = { params: { cardId: '123' }, body: [] } as unknown as Request;
+        const req = {params: {cardId: '123'}, body: []} as unknown as Request;
         const res = makeRes();
 
         // ACT
@@ -29,14 +22,14 @@ describe('UpdateCardTagHandler', () => {
 
         // ASSERT
         expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith({ message: 'Body must be an object' });
+        expect(res.json).toHaveBeenCalledWith({message: 'Body must be an object'});
         expect(mockService.execute).not.toHaveBeenCalled();
     });
 
     it('should return 400 when cardId is missing/blank', async () => {
         // ARRANGE
         const handler = new UpdateCardTagHandler(mockService);
-        const req = { params: { cardId: '   ' }, body: { tag: 'learning' } } as unknown as Request;
+        const req = {params: {cardId: '   '}, body: {tag: 'learning'}} as unknown as Request;
         const res = makeRes();
 
         // ACT
@@ -44,14 +37,14 @@ describe('UpdateCardTagHandler', () => {
 
         // ASSERT
         expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith({ message: 'cardId is required' });
+        expect(res.json).toHaveBeenCalledWith({message: 'cardId is required'});
         expect(mockService.execute).not.toHaveBeenCalled();
     });
 
     it('should return 400 when tag is whitespace-only', async () => {
         // ARRANGE
         const handler = new UpdateCardTagHandler(mockService);
-        const req = { params: { cardId: '123' }, body: { tag: '   ' } } as unknown as Request;
+        const req = {params: {cardId: '123'}, body: {tag: '   '}} as unknown as Request;
         const res = makeRes();
 
         // ACT
@@ -68,8 +61,8 @@ describe('UpdateCardTagHandler', () => {
         (mockService.execute as jest.Mock).mockResolvedValue(undefined);
 
         const req = {
-            params: { cardId: '123' },
-            body: { tag: '  learning  ' },
+            params: {cardId: '123'},
+            body: {tag: '  learning  '},
         } as unknown as Request;
         const res = makeRes();
 
@@ -91,8 +84,8 @@ describe('UpdateCardTagHandler', () => {
         (mockService.execute as jest.Mock).mockResolvedValue(undefined);
 
         const req = {
-            params: { cardId: '123' },
-            body: { tag: null },
+            params: {cardId: '123'},
+            body: {tag: null},
         } as unknown as Request;
         const res = makeRes();
 
@@ -113,8 +106,8 @@ describe('UpdateCardTagHandler', () => {
         const handler = new UpdateCardTagHandler(mockService);
 
         const req = {
-            params: { cardId: '123' },
-            body: { tag: '' },
+            params: {cardId: '123'},
+            body: {tag: ''},
         } as unknown as Request;
 
         const res = makeRes();

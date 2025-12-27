@@ -3,13 +3,7 @@ import {GetQuizzCardsHandler} from '../../../../src/presentation/http/handlers/c
 import {Card} from '../../../../src/domain/models/card';
 import {Category} from '../../../../src/domain/models/category';
 import {GetQuizzCardsService} from "../../../../src/application/services/get-quizz-cards-service";
-
-function makeRes() {
-    const res: Partial<Response> = {};
-    res.status = jest.fn().mockReturnValue(res);
-    res.json = jest.fn().mockReturnValue(res);
-    return res as Response;
-}
+import {makeRes} from "../../utils";
 
 describe('GetQuizzCardsHandler', () => {
     const mockGetQuizzCardsService = {
@@ -86,7 +80,6 @@ describe('GetQuizzCardsHandler', () => {
                 answer: 'A1',
                 category: Category.FIRST,
                 tag: 'T1',
-                nextReviewDate: new Date('2024-01-01')
             }),
             new Card({
                 id: '2',

@@ -30,8 +30,7 @@ describe('Leitner Interval Calculator', () => {
         expect(calculateLeitnerInterval(Category.SEVENTH)).toBe(64);
     });
 
-    it('should throw an error for DONE category', () => {
-        expect(() => calculateLeitnerInterval(Category.DONE)).toThrow();
+    it('should return 0 days for DONE category', () => {
+        expect(calculateLeitnerInterval(Category.DONE)).toBe(0);
     });
-    it
 });
