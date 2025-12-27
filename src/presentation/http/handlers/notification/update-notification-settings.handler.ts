@@ -18,14 +18,7 @@ export class PatchNotificationSettingsHandler {
             return res.status(400).json(generateValidationErrorMessage(error.details));
         }
 
-        const userId = 'fake-user-id';
-
-        await this.updateSettings.execute({
-            userId,
-            enabled: value.enabled,
-            timeOfDay: value.timeOfDay,
-            timezone: value.timezone,
-        });
+        await this.updateSettings.execute(value);
 
         return res.status(204).send();
     };

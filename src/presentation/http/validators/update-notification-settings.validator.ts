@@ -1,6 +1,10 @@
 import Joi from 'joi';
+import {
+    UpdateNotificationSettingsCommand
+} from "../../../application/services/notification/update-notification-settings-service";
 
-export const updateNotificationSettingsValidation = Joi.object({
+export const updateNotificationSettingsValidation = Joi.object<UpdateNotificationSettingsCommand>({
+    userId: Joi.required(),
     enabled: Joi.boolean().optional(),
 
     timeOfDay: Joi.string()

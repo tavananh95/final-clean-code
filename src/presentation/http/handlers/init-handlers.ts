@@ -34,7 +34,7 @@ export const initHandlers = (app: Application) => {
     // Health check
     // ─────────────────────────
     app.get('/health', (_: Request, res: Response) => {
-        res.send({message: 'ping'});
+        res.send({message: 'Leitner system back end service is online'});
     });
 
     // ─────────────────────────
@@ -94,7 +94,7 @@ export const initHandlers = (app: Application) => {
     const updateNotificationSettingsService = new UpdateNotificationSettingsService(notificationSettingsRepository);
     const patchNotificationSettingsHandler = new PatchNotificationSettingsHandler(updateNotificationSettingsService);
 
-    app.patch('/me/notification-settings', patchNotificationSettingsHandler.handle);
+    app.patch('/notification-settings', patchNotificationSettingsHandler.handle);
 
 
 };

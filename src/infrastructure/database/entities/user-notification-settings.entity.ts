@@ -14,6 +14,9 @@ export class UserNotificationSettingsEntity {
     @Column()
     timezone!: string;
 
+    @Column({ type: 'timestamptz', nullable: true })
+    nextRunAt!: Date | null;
+
     @CreateDateColumn()
     createdAt!: Date;
 
