@@ -112,5 +112,5 @@
   },
   "include": [
     "src/**/*.ts"       // Inclut tous les fichiers TypeScript
-  ]
+, "tests/application/find-or-create-user.spec.ts"  ]
 }
