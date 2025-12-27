@@ -17,6 +17,4 @@ export class CardEntity {
     @Column({nullable: true})
     tag?: string;
 
-    @Column({type: 'timestamp', nullable: true})
-    nextReviewDate?: Date;
 }
