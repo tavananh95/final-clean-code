@@ -16,4 +16,15 @@ Bienvenue au projet back end Leitner system du groupe 4
 ## Port de l'application back end
 localhost:3000
 
-## Fonctionalités
+## Fonctionnalités
+
+| Fonctionnalité                       | Méthode | Route |
+|--------------------------------------|--------|-------|
+| Connexion OAuth2/OIDC                | POST | `/auth/provider` |
+| Créer une fiche                      | POST | `/card` |
+| Lancer un questionnaire              | GET | `/card/quizz` |
+| Répondre à une fiche                 | PATCH | `/card/:cardId/answer` |
+| Ajouter / modifier un tag            | PATCH | `/card/:cardId/tag` |
+| Consulter les fiches associées à un tag | GET | `/card?tag=...` |
+| Paramétrer les notifications         | PATCH | `/notification-settings` |
+| Health check                         | GET | `/health` |
