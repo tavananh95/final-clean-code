@@ -40,6 +40,13 @@ export class Card {
         answer: string;
         tag?: string;
     }): Card {
+        if (!props.question || props.question.trim() === '') {
+            throw new Error('Question is required');
+        }
+
+        if (!props.answer || props.answer.trim() === '') {
+            throw new Error('Answer is required');
+        }
         return new Card({
             id: props.id,
             question: props.question,
