@@ -1,10 +1,11 @@
 import {Card} from "../../domain/models/card";
-import {CardRepository} from "../ports/card.repository";
+import {CardReader} from "../ports/card-reader.port";
 
 export class GetCardsByTagService {
-    constructor(private readonly cardRepository: CardRepository) {}
+    constructor(private readonly cardReader: CardReader) {
+    }
 
     async execute(tag: string): Promise<Card[]> {
-        return this.cardRepository.findByTag(tag);
+        return this.cardReader.findByTag(tag);
     }
 }

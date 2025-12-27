@@ -1,5 +1,6 @@
-import {CardRepository} from "../ports/card.repository";
 import {CardNotFoundError} from "../../domain/errors/card-not-found-error";
+import {CardReader} from "../ports/card-reader.port";
+import {CardWriter} from "../ports/card-writer.port";
 
 export type UpdateCardTagCommand = {
     cardId: string;
@@ -7,13 +8,17 @@ export type UpdateCardTagCommand = {
 };
 
 export class UpdateCardTagService {
-    constructor(private readonly cardRepository: CardRepository) {}
+    constructor(
+        private readonly cardReader: CardReader,
+        private readonly cardWritter: CardWriter
+    ) {
+    }
 
     async execute(command: UpdateCardTagCommand): Promise<void> {
-        const card = await this.cardRepository.getCardById(command.cardId);
+        const card = await this.cardReader.getById(command.cardId);
         if (!card) throw new CardNotFoundError();
 
         card.updateTag(command.tag);
-        await this.cardRepository.updateCard(card);
+        await this.cardWritter.update(card);
     }
 }
