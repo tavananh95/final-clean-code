@@ -17,7 +17,7 @@ describe("SendDueNotifications", () => {
     });
 
     it("should send notifications and reschedule nextRunAt for due users", async () => {
-        // Arrange
+
         const repo = new InMemoryNotificationSettingsRepository();
         const notifier = new FakeNotificationSender();
         const service = new SendDueNotifications(repo, notifier);
@@ -35,10 +35,8 @@ describe("SendDueNotifications", () => {
             { userId: "user-1", settings }
         ];
 
-        // Act
         await service.execute(now);
 
-        // Assert
         expect(notifier.sentTo).toEqual(["user-1"]);
 
         expect(repo.saved).toHaveLength(1);
@@ -63,6 +61,26 @@ describe("SendDueNotifications", () => {
 
         expect(result).toBe("Notification sent to user!");
         expect(notifier.sentTo).toEqual(["user-42"]);
+    });
+
+    it('should return null if notifications are disabled', () => {
+        const settings = new NotificationSettings(false, '12:00', 'UTC', null);
+        const next = NotificationScheduler.computeNextRun(settings);
+        expect(next).toBeNull();
+    });
+
+    it('should schedule for today if timeOfDay is in the future', () => {
+        const now = new Date('2025-12-27T08:00:00Z');
+        const settings = new NotificationSettings(true, '12:00', 'UTC', null);
+        const next = NotificationScheduler.computeNextRun(settings, now);
+        expect(next!.getUTCDate()).toBe(now.getUTCDate());
+    });
+
+    it('should schedule for tomorrow if timeOfDay has already passed (covers line 25)', () => {
+        const now = new Date('2025-12-27T14:00:00Z');
+        const settings = new NotificationSettings(true, '12:00', 'UTC', null);
+        const next = NotificationScheduler.computeNextRun(settings, now);
+        expect(next!.getUTCDate()).toBe(now.getUTCDate() + 1);
     });
 
 });
