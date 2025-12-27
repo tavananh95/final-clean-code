@@ -18,13 +18,14 @@ localhost:3000
 
 ## Fonctionnalités
 
-| Fonctionnalité                       | Méthode | Route |
-|--------------------------------------|--------|-------|
-| Connexion OAuth2/OIDC                | POST | `/auth/provider` |
-| Créer une fiche                      | POST | `/card` |
-| Lancer un questionnaire              | GET | `/card/quizz` |
-| Répondre à une fiche                 | PATCH | `/card/:cardId/answer` |
-| Ajouter / modifier un tag            | PATCH | `/card/:cardId/tag` |
-| Consulter les fiches associées à un tag | GET | `/card?tag=...` |
-| Paramétrer les notifications         | PATCH | `/notification-settings` |
-| Health check                         | GET | `/health` |
+| Fonctionnalité                                | Méthode | Route |
+|-----------------------------------------------|---------|---|
+| Connexion OAuth2/OIDC                         | POST    | `/auth/provider` |
+| Créer une fiche                               | POST    | `/card` |
+| Lancer un questionnaire                       | GET     | `/card/quizz` |
+| Répondre à une fiche                          | PATCH   | `/card/:cardId/answer` |
+| Ajouter / modifier un tag                     | PATCH   | `/card/:cardId/tag` |
+| Consulter les fiches associées à un tag       | GET     | `/card?tag=...` |
+| Paramétrer les notifications                  | PATCH   | `/notification-settings` |
+| Scanner les notifications à envoyer (CronJob) | x       |      |
+| Health check                                  | GET     | `/health` |
