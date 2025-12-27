@@ -2,7 +2,7 @@ import {CardRepository} from '../../src/application/ports/card.repository';
 import {Card} from '../../src/domain/models/card';
 import {Category} from "../../src/domain/models/category";
 import {AnswerCardService} from "../../src/application/services/answer-card-service";
-
+import { CardNotFoundError } from '../../src/domain/errors/card-not-found-error';
 
 const mockCardRepo = {
     getCardById: jest.fn(),
@@ -54,6 +54,17 @@ describe('AnswerCardService', () => {
                 nextReviewDate: expect.any(Date)
             })
         );
+    });
+
+    it('should throw CardNotFoundError if card does not exist', async () => {
+        (mockCardRepo.getCardById as jest.Mock).mockResolvedValue(undefined);
+        const service = new AnswerCardService(mockCardRepo);
+        await expect(service.executeWithComparison('non-existent-id', 'answer'))
+            .rejects
+            .toThrow(CardNotFoundError);
+
+        expect(mockCardRepo.getCardById).toHaveBeenCalledWith('non-existent-id');
+        expect(mockCardRepo.updateCard).not.toHaveBeenCalled();
     });
 
     it('should reset category and update date when answer is invalid', async () => {
