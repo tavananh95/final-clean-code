@@ -86,7 +86,8 @@ export class Card {
         const intervalInDays = calculateLeitnerInterval(this.props.category);
         const nextDate = new Date(now);
         nextDate.setDate(nextDate.getDate() + intervalInDays);
-
+        console.log("nextDate")
+        console.log(nextDate)
         this.props.nextReviewDate = nextDate;
     }
     private promoteCategory(): void {

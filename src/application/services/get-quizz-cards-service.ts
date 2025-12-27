@@ -9,8 +9,9 @@ export class GetQuizzCardsService {
     const cards = await this.cardRepository.getCardsToReview(date);
 
     const today = date.toDateString();
-    const cardsToReturn = cards.filter(card =>
-        !card.lastQuizzDate || card.lastQuizzDate.toDateString() !== today
+        const cardsToReturn = cards.filter(card =>
+        !card.lastQuizzDate || card.lastQuizzDate.toDateString() ||
+            !card.nextReviewDate || card.nextReviewDate.toDateString()  !== today
     );
 
     cardsToReturn.forEach(card => card.setLastQuizzDate(date));

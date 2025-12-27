@@ -1,5 +1,6 @@
 import {CardRepository} from "../ports/card.repository";
 import {CardNotFoundError} from "../../domain/errors/card-not-found-error";
+import { calculateLeitnerInterval } from "../../domain/services/leitner-interval-calculator";
 
 export class AnswerCardService {
     constructor(private readonly cardRepository: CardRepository) {
@@ -19,6 +20,9 @@ export class AnswerCardService {
 
         card.answerQuestion(isValid);
 
+        console.log("category after answer:", card.state.category);
+        console.log("interval:", calculateLeitnerInterval(card.state.category));
+        console.log("nextReviewDate:", card.state.nextReviewDate);
         await this.cardRepository.updateCard(card);
     }
 }
