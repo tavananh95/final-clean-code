@@ -104,5 +104,31 @@ describe('getCardsByTagHandler', () => {
         expect(res.status).toHaveBeenCalledWith(200);
     });
 
+    it('should return only cards matching the provided tags', async () => {
+        const handler = new GetCardsByTagHandler(mockGetCardsByTag as any);
+
+        const cards = [
+            new Card({ id: '1', question: 'Q1', answer: 'A1', category: Category.FIRST, tag: 'learning' }),
+            new Card({ id: '2', question: 'Q2', answer: 'A2', category: Category.SECOND, tag: 'science' }),
+            new Card({ id: '3', question: 'Q3', answer: 'A3', category: Category.FIRST, tag: 'math' }),
+        ];
+
+        (mockGetCardsByTag.execute as jest.Mock).mockImplementation((tags: string[] | undefined) => {
+            return Promise.resolve(cards.filter(card => tags?.includes(card.state.tag!)));
+        });
+
+        const req = { query: { tags: 'learning,science' } } as unknown as Request;
+        const res = makeRes();
+
+        await handler.handle(req, res);
+
+        expect(mockGetCardsByTag.execute).toHaveBeenCalledWith(['learning', 'science']);
+        expect(res.status).toHaveBeenCalledWith(200);
+
+        const returnedIds = (res.json as jest.Mock).mock.calls[0][0].map((c: any) => c.id);
+        expect(returnedIds).toEqual(['1', '2']);
+    });
+
+
 
 });
