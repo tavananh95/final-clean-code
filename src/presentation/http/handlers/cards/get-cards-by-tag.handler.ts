@@ -8,17 +8,18 @@ export class GetCardsByTagHandler {
 
     handle = async (req: Request, res: Response) => {
         try {
-            const tagsQuery = req.query.tags;
+            const tags = req.query.tags;
 
-            let tags: string[] | undefined;
+            let tagArray: string[] | undefined;
 
-            if (typeof tagsQuery === 'string') {
-                tags = [tagsQuery];
-            } else if (Array.isArray(tagsQuery)) {
-                tags = tagsQuery.filter(t => typeof t === 'string');
-            }
+            if (typeof tags === 'string' && tags.trim().length > 0) {
+            tagArray = tags.split(',').map(t => t.trim()).filter(Boolean);
+        } else if (Array.isArray(tags)) {
+            tagArray = tags.map(t => String(t).trim()).filter(Boolean);
+            if (tagArray.length === 0) tagArray = undefined;
+        }
 
-            const cards = await this.getCardsByTag.execute(tags);
+            const cards = await this.getCardsByTag.execute(tagArray);
             
             return res.status(200).json(
                 cards.map((card) => ({

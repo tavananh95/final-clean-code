@@ -68,7 +68,7 @@ describe('getCardsByTagHandler', () => {
 
         await handler.handle(req, res);
 
-        expect(mockGetCardsByTag.execute).toHaveBeenCalledWith(['learning', 'review']);
+        expect(mockGetCardsByTag.execute).toHaveBeenCalledWith(["learning", "review"]);
         expect(res.status).toHaveBeenCalledWith(200);
     });
 
