@@ -7,7 +7,6 @@ export interface CardProps {
     answer: string;
     category: Category;
     tag?: string;
-    nextReviewDate?: Date;
 }
 
 export class Card {
@@ -26,10 +25,6 @@ export class Card {
         return this.props.category;
     }
 
-    get nextReviewDate(): Date | undefined {
-        return this.props.nextReviewDate;
-    }
-
     get state(): CardProps {
         return {...this.props};
     }
@@ -46,7 +41,6 @@ export class Card {
             answer: props.answer,
             category: Category.FIRST,
             tag: props.tag,
-            nextReviewDate: undefined
         });
     }
 
@@ -61,24 +55,16 @@ export class Card {
         } else {
             this.promoteCategory();
         }
-        if (this.props.category === Category.DONE) {
-            this.props.nextReviewDate = undefined;
-            return;
-        }
-
-        const intervalInDays = calculateLeitnerInterval(this.props.category);
-        const nextDate = new Date(now);
-        nextDate.setDate(nextDate.getDate() + intervalInDays);
-
-        this.props.nextReviewDate = nextDate;
     }
+
+    updateTag(tag?: string): void {
+        this.props.tag = tag;
+    }
+
     private promoteCategory(): void {
         const currentIndex = ORDERED_CATEGORIES.indexOf(this.props.category);
         if (currentIndex !== -1 && currentIndex < ORDERED_CATEGORIES.length - 1) {
             this.props.category = ORDERED_CATEGORIES[currentIndex + 1];
         }
-    }
-    updateTag(tag?: string): void {
-        this.props.tag = tag;
     }
 }
