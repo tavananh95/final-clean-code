@@ -28,6 +28,7 @@ import {
 import {
     TypeOrmNotificationSettingsRepository
 } from "../../../infrastructure/database/repositories/typeorm-notification-settings.repository";
+import {TypeOrmQuizzRepository} from "../../../infrastructure/database/repositories/typeorm-quizz.repository";
 
 
 export const initHandlers = (app: Application) => {
@@ -64,12 +65,14 @@ export const initHandlers = (app: Application) => {
     // Card feature
     // ─────────────────────────
     const cardRepository = new TypeOrmCardRepository(AppDataSource);
+    const quizzRepository = new TypeOrmQuizzRepository(AppDataSource);
 
-    const answerCardService = new AnswerCardService(cardRepository);
-    const createCardService = new CreateCardService(cardRepository);
+
+    const answerCardService = new AnswerCardService(cardRepository, cardRepository, quizzRepository);
+    const createCardService = new CreateCardService(cardRepository, quizzRepository);
     const getCardsByTagService = new GetCardsByTagService(cardRepository);
     const getQuizzCardsService = new GetQuizzCardsService(cardRepository);
-    const updateCardTagService = new UpdateCardTagService(cardRepository);
+    const updateCardTagService = new UpdateCardTagService(cardRepository, cardRepository);
     const createCardHandler = new CreateCardHandler(createCardService);
 
     app.post(Route.CARD, createCardHandler.handle);
@@ -84,7 +87,7 @@ export const initHandlers = (app: Application) => {
     app.get(Route.CARD, getCardsByTagHandler.handle);
 
     const updateCardTagHandler = new UpdateCardTagHandler(updateCardTagService);
-    app.patch(Route.CARD +'/:cardId/tag', updateCardTagHandler.handle);
+    app.patch(Route.CARD + '/:cardId/tag', updateCardTagHandler.handle);
 
 
     // ─────────────────────────
