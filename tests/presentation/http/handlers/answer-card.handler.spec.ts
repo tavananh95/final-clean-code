@@ -5,6 +5,7 @@ import { CardNotFoundError } from '../../../../src/domain/errors/card-not-found-
 import { GeneralRequestValidationError } from '../../../../src/presentation/http/errors/general-request-validation-error';
 import { isUUID } from 'class-validator';
 
+
 function makeRes() {
     const res: Partial<Response> = {};
     res.status = jest.fn().mockReturnValue(res);
@@ -35,10 +36,54 @@ describe('AnswerCardHandler with comparison', () => {
 
         await handler.handle(req, res);
 
-        expect(mockService.executeWithComparison).toHaveBeenCalledWith('123e4567-e89b-12d3-a456-426614174000', '42');
+        expect(mockService.executeWithComparison).toHaveBeenCalledWith('123e4567-e89b-12d3-a456-426614174000', '42', false);
         expect(res.status).toHaveBeenCalledWith(204);
         expect(res.send).toHaveBeenCalled();
     });
+
+    it('should return 204 when force is true even if userAnswer is wrong', async () => {
+        const req = { 
+            params: { cardId: '123e4567-e89b-12d3-a456-426614174005' }, 
+            body: { userAnswer: 'wrong', force: true } 
+        } as unknown as Request;
+        const res = makeRes();
+
+        (mockService.executeWithComparison as jest.Mock).mockResolvedValue({
+            state: { answer: 'correct' }
+        });
+
+        await handler.handle(req, res);
+
+        expect(mockService.executeWithComparison).toHaveBeenCalledWith(
+            '123e4567-e89b-12d3-a456-426614174005', 'wrong', true
+        );
+        expect(res.status).toHaveBeenCalledWith(204);
+        expect(res.send).toHaveBeenCalled();
+    });
+
+    it('should return 200 with correct answer if userAnswer is wrong and force is false', async () => {
+        const req = { 
+            params: { cardId: '123e4567-e89b-12d3-a456-426614174006' }, 
+            body: { userAnswer: 'wrong', force: false } 
+        } as unknown as Request;
+        const res = makeRes();
+
+        (mockService.executeWithComparison as jest.Mock).mockResolvedValue({
+            state: { answer: 'correct' }
+        });
+
+        await handler.handle(req, res);
+
+        expect(mockService.executeWithComparison).toHaveBeenCalledWith(
+            '123e4567-e89b-12d3-a456-426614174006', 'wrong', false
+        );
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith({
+            message: 'Incorrect answer',
+            correctAnswer: 'correct'
+        });
+    });
+
 
     it('should return 200 with correct answer if userAnswer is wrong', async () => {
         const req = { params: { cardId: '123e4567-e89b-12d3-a456-426614174001' }, body: { userAnswer: 'wrong' } } as unknown as Request;

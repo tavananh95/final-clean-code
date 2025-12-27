@@ -67,6 +67,17 @@ describe('AnswerCardService', () => {
         expect(mockCardRepo.updateCard).not.toHaveBeenCalled();
     });
 
+    it('should mark the card as correct when force is true even if answer is wrong', async () => {
+        const service = new AnswerCardService(mockCardRepo);
+        const card = new Card({ id: '1', question: 'Q', answer: 'Correct', category: Category.FIRST });
+        mockCardRepo.getCardById = jest.fn().mockResolvedValue(card);
+
+        await service.executeWithComparison('1', 'Wrong answer', true);
+
+        expect(card.category).toBe(Category.SECOND);
+        expect(mockCardRepo.updateCard).toHaveBeenCalledWith(card);
+    });
+
     it('should reset category and update date when answer is invalid', async () => {
         // ARRANGE
         const service = new AnswerCardService(mockCardRepo);

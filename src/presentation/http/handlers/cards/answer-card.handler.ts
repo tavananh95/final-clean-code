@@ -11,7 +11,7 @@ export class AnswerCardHandler {
     handle = async (req: Request, res: Response) => {
         const {cardId} = req.params;
         try {
-            const {userAnswer} = req.body;
+            const {userAnswer, force } = req.body;
 
             if (!userAnswer || typeof userAnswer !== 'string') {
                 throw new GeneralRequestValidationError("userAnswer must be a non-empty string");
@@ -21,9 +21,9 @@ export class AnswerCardHandler {
                 throw new GeneralRequestValidationError('Invalid cardId format');
             }
 
-            const card = await this.answerCard.executeWithComparison(cardId, userAnswer);
+            const card = await this.answerCard.executeWithComparison(cardId, userAnswer, !!force);
 
-            if (card.state.answer !== userAnswer) {
+            if (card.state.answer !== userAnswer && !force) {
                 return res.status(200).json({
                     message: 'Incorrect answer',
                     correctAnswer: card.state.answer

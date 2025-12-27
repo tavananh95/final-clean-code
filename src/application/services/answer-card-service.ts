@@ -22,12 +22,13 @@ export class AnswerCardService {
         await this.cardRepository.updateCard(card);
     }
 
-    async executeWithComparison(cardId: string, userAnswer: string) {
+    async executeWithComparison(cardId: string, userAnswer: string, force: boolean = false) {
         const card = await this.cardRepository.getCardById(cardId);
         if (!card) throw new CardNotFoundError();
 
-        const isValid = card.state.answer.trim().toLowerCase() === userAnswer.trim().toLowerCase();
+        const isValid = force || card.state.answer.trim().toLowerCase() === userAnswer.trim().toLowerCase();
         card.answerQuestion(isValid);
+
         await this.cardRepository.updateCard(card);
 
         return card;
