@@ -21,13 +21,20 @@ import {AuthenticateService} from "../../../application/services/auth/authentica
 import {UpdateCardTagHandler} from "./cards/update-card-tag.handler";
 import {UpdateCardTagService} from "../../../application/services/update-card-tag-service";
 import {Route} from "./route";
+import {PatchNotificationSettingsHandler} from "./notification/update-notification-settings.handler";
+import {
+    UpdateNotificationSettingsService
+} from "../../../application/services/notification/update-notification-settings-service";
+import {
+    TypeOrmNotificationSettingsRepository
+} from "../../../infrastructure/database/repositories/typeorm-notification-settings.repository";
 
 
 export const initHandlers = (app: Application) => {
     // Health check
     // ─────────────────────────
     app.get('/health', (_: Request, res: Response) => {
-        res.send({message: 'ping'});
+        res.send({message: 'Leitner system back end service is online'});
     });
 
     // ─────────────────────────
@@ -78,5 +85,16 @@ export const initHandlers = (app: Application) => {
 
     const updateCardTagHandler = new UpdateCardTagHandler(updateCardTagService);
     app.patch(Route.CARD +'/:cardId/tag', updateCardTagHandler.handle);
+
+
+    // ─────────────────────────
+    // Notification feature
+    // ─────────────────────────
+    const notificationSettingsRepository = new TypeOrmNotificationSettingsRepository(AppDataSource);
+    const updateNotificationSettingsService = new UpdateNotificationSettingsService(notificationSettingsRepository);
+    const patchNotificationSettingsHandler = new PatchNotificationSettingsHandler(updateNotificationSettingsService);
+
+    app.patch('/notification-settings', patchNotificationSettingsHandler.handle);
+
 
 };
