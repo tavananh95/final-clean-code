@@ -106,5 +106,22 @@ describe('Card Domain Entity', () => {
             expect(card.category).toBe(Category.DONE);
             expect(card.nextReviewDate).toBeUndefined();
         });
+
+        it('should update the tag correctly', () => {
+            const card = Card.createNew({
+                id: '1',
+                question: 'What is TypeScript?',
+                answer: 'A superset of JavaScript',
+            });
+
+            expect(card.state.tag).toBeUndefined();
+
+            card.updateTag('programming');
+
+            expect(card.state.tag).toBe('programming');
+
+            card.updateTag(undefined);
+            expect(card.state.tag).toBeUndefined();
+        });
     });
 });
