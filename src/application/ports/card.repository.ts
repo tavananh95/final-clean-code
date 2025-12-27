@@ -16,7 +16,7 @@ export interface CardRepository {
 
     createCard(card: Card): Promise<void>;
 
-    findByTag(tag: string): Promise<Card[]>;
+    findByTags(tags?: string[]): Promise<Card[]>;
 
     getCardsToReview(date: Date): Promise<Card[]>;
 }

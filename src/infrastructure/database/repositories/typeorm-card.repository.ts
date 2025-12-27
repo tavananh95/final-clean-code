@@ -4,6 +4,7 @@ import {CardMapper} from "../../mappers/card.mapper";
 import {CardEntity} from "../entities/card.entity";
 import {CardRepository} from "../../../application/ports/card.repository";
 import {Category} from "../../../domain/models/category";
+import { In } from 'typeorm';
 
 export class TypeOrmCardRepository implements CardRepository {
     private repo: Repository<CardEntity>;
@@ -47,12 +48,16 @@ export class TypeOrmCardRepository implements CardRepository {
         await this.repo.save(persistenceData);
     }
 
-    async findByTag(tag: string): Promise<Card[]> {
-        const entities = await this.repo.find({
-            where: {tag: ILike(tag)},
-            order: {category: 'ASC'},
-        });
+    async findByTags(tags?: string[]): Promise<Card[]> {
+    const where = tags && tags.length > 0
+        ? { tag: In(tags) }
+        : {};
 
-        return entities.map(CardMapper.toDomain);
-    }
+    const entities = await this.repo.find({
+        where,
+        order: { category: 'ASC' },
+    });
+
+    return entities.map(CardMapper.toDomain);
+}
 }

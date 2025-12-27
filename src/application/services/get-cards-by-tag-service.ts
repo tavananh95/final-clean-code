@@ -4,7 +4,7 @@ import {CardRepository} from "../ports/card.repository";
 export class GetCardsByTagService {
     constructor(private readonly cardRepository: CardRepository) {}
 
-    async execute(tag: string): Promise<Card[]> {
-        return this.cardRepository.findByTag(tag);
+    async execute(tags?: string[]): Promise<Card[]> {
+        return this.cardRepository.findByTags(tags);
     }
 }

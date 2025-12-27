@@ -27,86 +27,49 @@ describe('getCardsByTagHandler', () => {
 
     beforeEach(() => jest.clearAllMocks());
 
-    it('should return 400 if tag is missing', async () => {
-        // ARRANGE
-        const handler = new GetCardsByTagHandler(mockGetCardsByTag as any);
-        const req = { query: {} } as unknown as Request;
-        const res = makeRes();
-
-        // ACT
-        await handler.handle(req, res);
-
-        // ASSERT
-        expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith({ message: 'Tag query parameter is required' });
-        expect(mockGetCardsByTag.execute).not.toHaveBeenCalled();
-    });
-
-    it('should return 400 if tag is blank/whitespace', async () => {
-        // ARRANGE
-        const handler = new GetCardsByTagHandler(mockGetCardsByTag as any);
-        const req = { query: { tag: '   ' } } as unknown as Request;
-        const res = makeRes();
-
-        // ACT
-        await handler.handle(req, res);
-
-        // ASSERT
-        expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith({ message: 'Tag query parameter is required' });
-        expect(mockGetCardsByTag.execute).not.toHaveBeenCalled();
-    });
-
-    it('should call service with trimmed tag and return 200 + mapped cards', async () => {
-        // ARRANGE
+    it('should return all cards when no tags are provided', async () => {
         const handler = new GetCardsByTagHandler(mockGetCardsByTag as any);
 
         const cards = [
-            new Card({ id: '1', question: 'Q1', answer: 'A1', category: Category.FIRST, tag: 'learning' }),
-            new Card({ id: '2', question: 'Q2', answer: 'A2', category: Category.SECOND, tag: 'learning' }),
+            new Card({ id: '1', question: 'Q1', answer: 'A1', category: Category.FIRST }),
         ];
 
         (mockGetCardsByTag.execute as jest.Mock).mockResolvedValue(cards);
 
-        const req = { query: { tag: '  learning  ' } } as unknown as Request;
+        const req = { query: {} } as unknown as Request;
         const res = makeRes();
 
-        // ACT
         await handler.handle(req, res);
 
-        // ASSERT
-        expect(mockGetCardsByTag.execute).toHaveBeenCalledWith('learning');
+        expect(mockGetCardsByTag.execute).toHaveBeenCalledWith(undefined);
         expect(res.status).toHaveBeenCalledWith(200);
-        expect(res.json).toHaveBeenCalledWith([
-            {
-                id: '1',
-                question: 'Q1',
-                answer: 'A1',
-                category: Category.FIRST,
-                tag: 'learning',
-            },
-            {
-                id: '2',
-                question: 'Q2',
-                answer: 'A2',
-                category: Category.SECOND,
-                tag: 'learning',
-            },
-        ]);
     });
 
-    it('should return 400 if tag is not a string (e.g. tag[]=x)', async () => {
-        // ARRANGE
+    it('should accept comma separated tags', async () => {
         const handler = new GetCardsByTagHandler(mockGetCardsByTag as any);
-        const req = { query: { tag: ['learning'] } } as unknown as Request;
+
+        (mockGetCardsByTag.execute as jest.Mock).mockResolvedValue([]);
+
+        const req = { query: { tags: 'learning,review' } } as unknown as Request;
         const res = makeRes();
 
-        // ACT
         await handler.handle(req, res);
 
-        // ASSERT
-        expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith({ message: 'Tag query parameter is required' });
-        expect(mockGetCardsByTag.execute).not.toHaveBeenCalled();
+        expect(mockGetCardsByTag.execute).toHaveBeenCalledWith(['learning', 'review']);
     });
+
+    it('should accept multiple tags as array', async () => {
+        const handler = new GetCardsByTagHandler(mockGetCardsByTag as any);
+
+        (mockGetCardsByTag.execute as jest.Mock).mockResolvedValue([]);
+
+        const req = { query: { tags: ['learning', 'review'] } } as unknown as Request;
+        const res = makeRes();
+
+        await handler.handle(req, res);
+
+        expect(mockGetCardsByTag.execute).toHaveBeenCalledWith(['learning', 'review']);
+        expect(res.status).toHaveBeenCalledWith(200);
+    });
+
 });

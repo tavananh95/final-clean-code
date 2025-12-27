@@ -8,14 +8,18 @@ export class GetCardsByTagHandler {
 
     handle = async (req: Request, res: Response) => {
         try {
-            const { tag } = req.query;
+            const tagsQuery = req.query.tags;
 
-            if (typeof tag !== 'string' || tag.trim().length === 0) {
-                throw new GeneralRequestValidationError('Tag query parameter is required')
+            let tags: string[] | undefined;
+
+            if (typeof tagsQuery === 'string') {
+                tags = [tagsQuery];
+            } else if (Array.isArray(tagsQuery)) {
+                tags = tagsQuery.filter(t => typeof t === 'string');
             }
 
-            const cards = await this.getCardsByTag.execute(tag.trim());
-
+            const cards = await this.getCardsByTag.execute(tags);
+            
             return res.status(200).json(
                 cards.map((card) => ({
                     id: card.state.id,
