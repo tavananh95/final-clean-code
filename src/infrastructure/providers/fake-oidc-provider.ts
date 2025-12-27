@@ -1,5 +1,5 @@
-import {OidcProviderPort, OidcUserInfo} from "../../../../application/ports/auth/oidc-provider.port";
-import {AuthProvider} from "../../../../domain/models/auth-provider-account";
+import {OidcProviderPort, OidcUserInfo} from "../../application/ports/auth/oidc-provider.port";
+import {AuthProvider} from "../../domain/models/auth-provider-account";
 
 
 export class FakeOidcProvider implements OidcProviderPort {

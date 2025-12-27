@@ -1,4 +1,3 @@
-// infrastructure/fakes/fake-auth-account.repository.ts
 
 import {AuthAccountRepositoryPort} from "../../../../application/ports/auth/auth-account-repository.port";
 import {AuthProvider, AuthProviderAccount} from "../../../../domain/models/auth-provider-account";

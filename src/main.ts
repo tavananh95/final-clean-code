@@ -6,7 +6,7 @@ import {
 import {SendDueNotifications} from "./application/services/notification/send-due-notification-service";
 import {startNotificationCron} from "./infrastructure/cron/notification.cron";
 import {AppDataSource} from "./infrastructure/database/data-source";
-import {EmailNotificationProvider} from "./infrastructure/providers/email-notification-provider";
+import {FakeEmailNotificationProvider} from "./infrastructure/providers/fake-email-notification-provider";
 
 
 async function bootstrap() {
@@ -15,7 +15,7 @@ async function bootstrap() {
 
     // cron
     const settingsRepo = new TypeOrmNotificationSettingsRepository(AppDataSource);
-    const notifier = new EmailNotificationProvider();
+    const notifier = new FakeEmailNotificationProvider();
 
     const sendDueNotifications = new SendDueNotifications(
         settingsRepo,

@@ -3,7 +3,7 @@ import {AppDataSource} from '../../../infrastructure/database/data-source';
 import {CreateCardService} from "../../../application/services/create-card-service";
 import {AnswerCardService} from "../../../application/services/answer-card-service";
 import {TypeOrmCardRepository} from "../../../infrastructure/database/repositories/typeorm-card.repository";
-import {FakeOidcProvider} from "../../../infrastructure/database/repositories/fake-auth/fake-oidc-provider";
+import {FakeOidcProvider} from "../../../infrastructure/providers/fake-oidc-provider";
 import {
     FakeAuthAccountRepository
 } from "../../../infrastructure/database/repositories/fake-auth/fake-auth-account.repository";
