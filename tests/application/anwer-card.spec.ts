@@ -13,24 +13,6 @@ describe('AnswerCardService', () => {
     beforeEach(() => {
         jest.clearAllMocks();
     })
-    it('should return original answer when user answer is wrong', async () => {
-        const service = new AnswerCardService(mockCardRepo);
-        const existingCard = new Card({
-            id: '123',
-            question: 'Q',
-            answer: 'CorrectAnswer',
-            category: Category.SECOND
-        });
-
-        (mockCardRepo.getCardById as jest.Mock).mockResolvedValue(existingCard);
-
-        const result = await service.executeWithComparison('123', 'WrongAnswer');
-
-        expect(result.state.answer).toBe('CorrectAnswer'); // réponse originale
-        expect(existingCard.category).toBe(Category.FIRST); // catégorie reset
-        expect(mockCardRepo.updateCard).toHaveBeenCalledWith(existingCard);
-    });
-    
     it('should calculate next review date and save the card when answer is valid', async () => {
         // ARRANGE
         const service = new AnswerCardService(mockCardRepo);
@@ -54,28 +36,6 @@ describe('AnswerCardService', () => {
                 nextReviewDate: expect.any(Date)
             })
         );
-    });
-
-    it('should throw CardNotFoundError if card does not exist', async () => {
-        (mockCardRepo.getCardById as jest.Mock).mockResolvedValue(undefined);
-        const service = new AnswerCardService(mockCardRepo);
-        await expect(service.executeWithComparison('non-existent-id', 'answer'))
-            .rejects
-            .toThrow(CardNotFoundError);
-
-        expect(mockCardRepo.getCardById).toHaveBeenCalledWith('non-existent-id');
-        expect(mockCardRepo.updateCard).not.toHaveBeenCalled();
-    });
-
-    it('should mark the card as correct when force is true even if answer is wrong', async () => {
-        const service = new AnswerCardService(mockCardRepo);
-        const card = new Card({ id: '1', question: 'Q', answer: 'Correct', category: Category.FIRST });
-        mockCardRepo.getCardById = jest.fn().mockResolvedValue(card);
-
-        await service.executeWithComparison('1', 'Wrong answer', true);
-
-        expect(card.category).toBe(Category.SECOND);
-        expect(mockCardRepo.updateCard).toHaveBeenCalledWith(card);
     });
 
     it('should reset category and update date when answer is invalid', async () => {

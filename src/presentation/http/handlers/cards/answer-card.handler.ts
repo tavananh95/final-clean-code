@@ -5,31 +5,24 @@ import {isUUID} from "class-validator";
 import {handleHttpError} from "../../errors/http-error-handler";
 import {GeneralRequestValidationError} from "../../errors/general-request-validation-error";
 
+
 export class AnswerCardHandler {
-    constructor(private readonly answerCard: AnswerCardService) {}
+    constructor(private readonly answerCard: AnswerCardService) {
+    }
 
     handle = async (req: Request, res: Response) => {
         const {cardId} = req.params;
         try {
-            const {userAnswer, force } = req.body;
+            const {isValid} = req.body;
 
-            if (!userAnswer || typeof userAnswer !== 'string') {
-                throw new GeneralRequestValidationError("userAnswer must be a non-empty string");
+
+            if (typeof isValid !== 'boolean') {
+                throw new GeneralRequestValidationError("isValid must be boolean")
             }
-
             if (!isUUID(cardId)) {
-                throw new GeneralRequestValidationError('Invalid cardId format');
+                throw new GeneralRequestValidationError('Invalid cardId format')
             }
-
-            const card = await this.answerCard.executeWithComparison(cardId, userAnswer, !!force);
-
-            if (card.state.answer !== userAnswer && !force) {
-                return res.status(200).json({
-                    message: 'Incorrect answer',
-                    correctAnswer: card.state.answer
-                });
-            }
-
+            await this.answerCard.execute(cardId, isValid);
             return res.status(204).send();
         } catch (error) {
             return handleHttpError(res, error);
