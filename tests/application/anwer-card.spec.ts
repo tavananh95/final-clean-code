@@ -13,6 +13,24 @@ describe('AnswerCardService', () => {
     beforeEach(() => {
         jest.clearAllMocks();
     })
+    it('should return original answer when user answer is wrong', async () => {
+        const service = new AnswerCardService(mockCardRepo);
+        const existingCard = new Card({
+            id: '123',
+            question: 'Q',
+            answer: 'CorrectAnswer',
+            category: Category.SECOND
+        });
+
+        (mockCardRepo.getCardById as jest.Mock).mockResolvedValue(existingCard);
+
+        const result = await service.executeWithComparison('123', 'WrongAnswer');
+
+        expect(result.state.answer).toBe('CorrectAnswer'); // réponse originale
+        expect(existingCard.category).toBe(Category.FIRST); // catégorie reset
+        expect(mockCardRepo.updateCard).toHaveBeenCalledWith(existingCard);
+    });
+    
     it('should calculate next review date and save the card when answer is valid', async () => {
         // ARRANGE
         const service = new AnswerCardService(mockCardRepo);
